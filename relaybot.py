@@ -3,6 +3,7 @@ from twisted.internet import reactor, protocol
 from twisted.internet.protocol import ReconnectingClientFactory
 from twisted.python import log
 from twisted.internet.endpoints import clientFromString
+from twisted.internet.ssl import ClientContextFactory
 from twisted.internet.task import LoopingCall
 from twisted.application import service
 from signal import signal, SIGINT
@@ -32,7 +33,7 @@ def main():
                 return None
 
         options = {}
-        for option in [ "timeout", "host", "port", "nick", "channel", "info", "heartbeat", "password", "username", "realname" ]:
+        for option in [ "timeout", "host", "port", "nick", "channel", "info", "heartbeat", "password", "username", "realname", "ssl" ]:
             options[option] = get(option)
 
         mode = get("mode")
@@ -52,7 +53,10 @@ def main():
             options["nickServPassword"] = get("nickServPassword")
 
         factory = factory(options)
-        reactor.connectTCP(options['host'], int(options['port']), factory, int(options['timeout']))
+        if options['ssl']:
+            reactor.connectSSL(options['host'], int(options['port']), factory, ClientContextFactory(), int(options['timeout']))
+        else:
+            reactor.connectTCP(options['host'], int(options['port']), factory, int(options['timeout']))
 
     reactor.callWhenRunning(signal, SIGINT, handler)
 
