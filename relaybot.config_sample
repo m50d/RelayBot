@@ -22,4 +22,6 @@ password=ItsASecretToEveryone
 
 [Umich]
 host=irc.umich.edu
+port=6697
+ssl=true
 
