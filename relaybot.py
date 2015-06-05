@@ -54,7 +54,7 @@ def main():
 
         factory = factory(options)
         optionAsBoolean = { "": False, "false": False, "no": False, "true": True, "yes": True }
-        sentinel = Object()
+        sentinel = object()
         ssl = options.get('ssl', sentinel)
         if(sentinel == ssl):
             raise TypeError("Cannot convert '{}' to boolean.".format(ssl))
