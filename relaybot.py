@@ -53,10 +53,10 @@ def main():
             options["nickServPassword"] = get("nickServPassword")
 
         factory = factory(options)
-        optionAsBoolean = { "": False, "false": False, "no": False, "true": True, "yes": True }
+        optionAsBoolean = { "": False, "False": False, "false": False, "no": False, "True": True, "true": True, "yes": True }
         sentinel = object()
-        ssl = options.get('ssl', sentinel)
-        if(sentinel == ssl):
+        ssl = options.get(option['ssl'], sentinel)
+        if sentinel == ssl:
             raise TypeError("Cannot convert '{}' to boolean.".format(ssl))
         elif ssl:
             reactor.connectSSL(options['host'], int(options['port']), factory, ClientContextFactory(), int(options['timeout']))
